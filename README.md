@@ -1,3 +1,3 @@
-# zync
+# pyczan
 
-Placeholder project for future高性能Python加速工具集.
+高性能Python加速工具集.
