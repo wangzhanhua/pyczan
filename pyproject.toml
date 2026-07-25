@@ -21,3 +21,4 @@ where = ["src/py"]
 
 [tool.setuptools.package-data]
 pyczan_shmem = ["*.pyd"]
+pyczan.shmem = ["*.pyd"]

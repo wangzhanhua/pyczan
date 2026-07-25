@@ -1,3 +1,3 @@
-from pyczan_shmem import SharedMemoryDict
+from . import shmem
 
-__all__ = ["SharedMemoryDict"]
+__all__ = ["shmem"]

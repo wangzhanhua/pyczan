@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
-    <RootNamespace>_pyczan_shmem</RootNamespace>
+    <ProjectGuid>{E5F6A7B8-C9D0-1234-EF56-789012345678}</ProjectGuid>
+    <RootNamespace>_shmem</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -36,9 +36,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(SolutionDir)..\..\py\pyczan_shmem\</OutDir>
+    <OutDir>$(SolutionDir)..\..\py\pyczan\shmem\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <TargetName>_pyczan_shmem</TargetName>
+    <TargetName>_shmem</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -50,13 +50,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\pyczan_shmem;$(SolutionDir)..\include;D:\python39\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include;D:\python39\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib;D:\python39\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>nanobind-static.lib;pyczan_shmem.lib;python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nanobind-static.lib;python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -69,7 +69,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\pyczan_shmem;$(SolutionDir)..\include;D:\python39\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include;D:\python39\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,14 +77,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\lib;D:\python39\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>nanobind-static.lib;pyczan_shmem.lib;python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nanobind-static.lib;python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\pyczan_shmem\bitmap.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\hash_index.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\block_zone.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\dict.cpp" />
     <ClCompile Include="..\..\pyczan_shmem\bindings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\pyczan_shmem\shmem_dict.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\bitmap.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\hash_index.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\block_zone.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\dict.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
