@@ -27,6 +27,7 @@ src/cpp/vc17/obj/
 
 # IDE
 .idea/
+.claude/
 *.suo
 *.user
 *.sln.docstates
