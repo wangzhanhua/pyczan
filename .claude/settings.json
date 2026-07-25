@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find e:/gitee/pyczan -maxdepth 3 -type f -not -path \"*/\\\\.git/*\" -not -path \"*/__pycache__/*\" -not -path \"*.egg-info/*\" | sort)",
+      "Read(//e/gitee/pyczan/\\\\*/.git/**)",
+      "Bash(find e:/gitee/pyczan -maxdepth 4 -type f -not -path \"*/\\\\.git/*\" -not -path \"*/__pycache__/*\" -not -path \"*.egg-info/*\" -not -path \"*/dist/*\" | sort)",
+      "Bash(cmake --version)",
+      "Bash(cmake -LA)",
+      "Bash(cmake --help)",
+      "Bash(env)",
+      "Read(//c/msys64/mingw64/bin/**)",
+      "Read(//d/msys64/mingw64/bin/**)",
+      "Bash(cmake -G \"Visual Studio 17 2022\" -B build_test)",
+      "Read(//usr/bin/**)",
+      "Bash(python -c \"import sys; print\\(f'{sys.version}, {sys.platform}, 64-bit: {sys.maxsize > 2**32}'\\)\")",
+      "Bash(cmake -G \"Visual Studio 17 2022\" -B build)",
+      "Read(//c//**)",
+      "Bash(pip list *)"
+    ]
+  }
+}

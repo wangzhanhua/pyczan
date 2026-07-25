@@ -1,0 +1,17 @@
+1 确保已安装 build 和 twine
+pip install build twine
+2 注册 PyPI 账号 https://pypi.org/
+3 创建 C:\Users\Administrator\.pypirc 文件，注意pypi-你的完整token 需要到 https://pypi.org/ 上进行复制
+[pypi]
+username = __token__
+password = pypi-你的完整token
+
+# 以下为重要步骤
+4 清理旧的构建产物
+rmdir /s /q dist build *.egg-info
+
+5 构建分发包
+python -m build
+
+6 上传到 pypi
+twine upload dist/* --verbose

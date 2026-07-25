@@ -9,7 +9,7 @@ description = "A placeholder for the zync project"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
-    {name = "weiyun", email = "13667605889@139.com"}
+    {name = "zan", email = "13667605889@139.com"}
 ]
 license = {text = "MIT"}
 classifiers = [
@@ -18,4 +18,4 @@ classifiers = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["src/py"]
