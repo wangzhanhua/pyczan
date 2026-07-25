@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pyczan"
 version = "0.0.0"
-description = "A placeholder for the zync project"
+description = "C++ high-performance Python acceleration toolkit"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
