@@ -41,8 +41,5 @@ src/cpp/lib/pyczan_shmem.lib
 src/cpp/lib/pyczan_shmemd.lib
 src/py/pyczan_shmem/_pyczan_shmem.lib
 
-# 文档（不上传到 Gitee）
-C++编码规范.md
-CLAUDE.md
-上传到pypi步骤.txt
-项目开发说明书.md
+# 项目文档（不上传到 Gitee）
+doc/
