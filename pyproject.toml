@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyczan"
-version = "0.0.0"
+version = "0.0.1"
 description = "C++ high-performance Python acceleration toolkit"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
     {name = "zan", email = "13667605889@139.com"}
 ]
-license = {text = "MIT"}
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -19,3 +19,6 @@ classifiers = [
 
 [tool.setuptools.packages.find]
 where = ["src/py"]
+
+[tool.setuptools.package-data]
+pyczan_shmem = ["*.pyd"]
