@@ -81,9 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\pyczan_shmem\bitmap.cpp" />
-    <ClCompile Include="..\..\pyczan_shmem\hash_index.cpp" />
-    <ClCompile Include="..\..\pyczan_shmem\block_zone.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\freelist.cpp" />
     <ClCompile Include="..\..\pyczan_shmem\dict.cpp" />
     <ClCompile Include="..\..\pyczan_shmem\bindings.cpp" />
   </ItemGroup>

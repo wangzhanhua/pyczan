@@ -1,80 +1,115 @@
 # pyczan
 
-**高性能 Python 加速工具集** — 为 Python 开发者提供底层 C++ 扩展模块，解决 CPU 密集型和 I/O 密集型场景下的性能瓶颈。
-
-## 模块
-
-| 模块 | 版本 | 说明 |
-|------|------|------|
-| pyczan_shmem | v0.1.0 | 基于 Windows 共享内存的进程间字典（SharedMemoryDict） |
-
-### pyczan_shmem
-
-多进程共享内存字典，提供 dict-like 接口：
+**Windows 多进程共享内存，dict 即用，零配置。**
 
 ```python
-from pyczan_shmem import SharedMemoryDict
+from pyczan import shmem
 
-d = SharedMemoryDict()
+d = shmem.Dict()
 d.OpenOrCreate("config")
-d["host"] = "127.0.0.1"
-d["port"] = "8080"
-print(d["host"])       # "127.0.0.1"
-print(len(d))          # 2
-print("host" in d)     # True
+
+# 和普通 dict 一样用
+d["host"] = "localhost"
+d["port"] = 8080          # 自动类型
+d["ratio"] = 0.95         # int/float/bytes/dict 都支持
+d["cfg"] = {"key": "val"} # 自动 pickle
+
+print(d["host"])           # "localhost"
+print(len(d))              # 3
 del d["port"]
+print("host" in d)         # True
 d.Close()
 ```
 
-## 环境要求
+---
 
-- Windows 10/11 64 位
-- Visual Studio 2022 BuildTools（MSVC v143）
-- Python >= 3.8
-- nanobind 1.2.0（已预编译，见 `src/cpp/lib/nanobind-static.lib`）
+## 为什么用 pyczan？
 
-## 快速开始
+### 跨进程共享，不需要 Redis
+
+```
+两个 Python 进程要共享数据：
+  Redis      → 要装服务、配置、占端口
+  Manager()  → 慢 10-35x（序列化+pipe）
+  文件        → 没同步、要轮询
+  raw shmem  → 只有 bytes，自己管索引
+
+  pyczan     → pip install，dict 即用
+```
+
+### 性能
+
+```
+                写入 10 条 × 10B          写入 100 条 × 10B         写入 10 条 × 100KB
+pyczan          0.0000s                  0.0001s                   0.0001s
+Manager()       0.0006s  (35x 慢)        0.0036s  (36x 慢)         0.0017s  (17x 慢)
+raw shmem       0.0000s  (同层)          0.0001s  (同层)           0.0006s  (慢 6x)
+```
+
+### numpy 零拷贝
+
+```python
+buf = d.Alloc(24 * 1024 * 1024)     # 24MB 连续内存
+arr = np.frombuffer(buf, dtype=np.uint8)  # 零拷贝
+```
+
+---
+
+## 安装
 
 ```bash
-# 克隆仓库
+pip install pyczan
+```
+
+需要 Windows 10/11 64 位 + Python 3.8+。
+
+## 使用
+
+```python
+from pyczan import shmem
+
+d = shmem.Dict()
+d.OpenOrCreate("config", total_size=1024*1024*1024)
+
+# dict 协议：自动类型
+d["count"] = 42                # int
+d["ratio"] = 3.14              # float
+d["data"] = b"\x00\x01\xff"   # bytes
+d["user"] = {"name": "zan"}    # dict → pickle
+
+# 原子操作
+d.Increment("counter")
+d.Add("price", 1.5)
+
+# 零拷贝缓冲区
+buf = d.Alloc(1024 * 1024)
+arr = np.frombuffer(buf, dtype=np.uint8)
+# ... 写入数据 ...
+d.Free(buf)
+
+# 状态监控
+print(d.Status())
+# → {"entries": 5, "total_blocks": 61440, "used_blocks": 12, ...}
+
+# 崩溃后恢复
+if d.Status()["was_crashed"]:
+    print("检测到上次异常退出，数据已自动修复")
+
+d.Close()
+```
+
+## 开发
+
+从源码构建：
+
+```bash
 git clone https://gitee.com/weiyunnote/pyczan.git
 cd pyczan
-
-# 构建 C++ 扩展（Release）
 src\cpp\build_release.bat
-
-# 运行测试
 pytest tests\test_shmem.py -v
 ```
 
-## 构建
-
-```bash
-# Release 构建
-src\cpp\build_release.bat
-
-# Debug 构建
-src\cpp\build_debug.bat
-```
-
-构建产物：
-
-| 产物 | 路径 |
-|------|------|
-| Python 扩展 | `src/py/pyczan_shmem/_pyczan_shmem.pyd` |
-| 静态库（Release） | `src/cpp/lib/pyczan_shmem.lib` |
-| 静态库（Debug） | `src/cpp/lib/pyczan_shmemd.lib` |
-| 测试程序 | `src/cpp/build/bin/Release/test_shmem.exe` |
-
-## 测试
-
-```bash
-# C++ 测试
-src\cpp\build\bin\Release\test_shmem.exe
-
-# Python 测试
-pytest tests\test_shmem.py -v
-```
+需要 VS2022 BuildTools（MSVC v143）。
 
 ## 许可证
 
