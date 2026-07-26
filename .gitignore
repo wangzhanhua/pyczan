@@ -44,3 +44,6 @@ src/py/pyczan_shmem/_pyczan_shmem.lib
 
 # 项目文档（不上传到 Gitee）
 doc/
+
+# 打包工具
+setup.py
