@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyczan"
-version = "0.0.2"
+version = "0.1.0"
 description = "C++ high-performance Python acceleration toolkit"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -20,5 +20,5 @@ classifiers = [
 where = ["src/py"]
 
 [tool.setuptools.package-data]
-pyczan_shmem = ["*.pyd"]
-pyczan.shmem = ["*.pyd"]
+pyczan = ["*.pyd"]
+"pyczan.shmem" = ["*.pyd"]

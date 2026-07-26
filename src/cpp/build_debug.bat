@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set MSBUILD=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe
+set MSBUILD=D:\soft\vs2022\Professional\MSBuild\Current\Bin\amd64\MSBuild.exe
 set SLN=%~dp0vc17\pyczan_shmem.sln
 
 echo ============================================

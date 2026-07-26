@@ -84,12 +84,17 @@
     <ClCompile Include="..\..\pyczan_shmem\freelist.cpp" />
     <ClCompile Include="..\..\pyczan_shmem\dict.cpp" />
     <ClCompile Include="..\..\pyczan_shmem\bindings.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\mem_region.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\lock.cpp" />
+    <ClCompile Include="..\..\pyczan_shmem\dict_store.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\pyczan\shmem\bitmap.hpp" />
     <ClInclude Include="..\..\include\pyczan\shmem\hash_index.hpp" />
-    <ClInclude Include="..\..\include\pyczan\shmem\block_zone.hpp" />
     <ClInclude Include="..\..\include\pyczan\shmem\dict.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\freelist.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\mem_region.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\lock.hpp" />
+    <ClInclude Include="..\..\include\pyczan\shmem\dict_store.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

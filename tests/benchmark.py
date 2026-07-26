@@ -108,6 +108,67 @@ def bench_manager_get(count, value_size):
 
 
 # ============================================================
+# 文件 IPC（JSON / pickle）
+# ============================================================
+
+import json
+import pickle
+import tempfile
+
+def bench_file_json_set(count, value_size):
+    value = "x" * value_size
+    data = {f"key{i}": value for i in range(count)}
+    fd, path = tempfile.mkstemp(suffix=".json")
+    os.close(fd)
+    start = time.perf_counter()
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f)
+    elapsed = time.perf_counter() - start
+    os.unlink(path)
+    return elapsed
+
+def bench_file_json_get(count, value_size):
+    value = "x" * value_size
+    data = {f"key{i}": value for i in range(count)}
+    fd, path = tempfile.mkstemp(suffix=".json")
+    os.close(fd)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f)
+    start = time.perf_counter()
+    with open(path, "r", encoding="utf-8") as f:
+        _ = json.load(f)
+    elapsed = time.perf_counter() - start
+    os.unlink(path)
+    return elapsed
+
+def bench_file_pickle_set(count, value_size):
+    value = "x" * value_size
+    data = {f"key{i}": value for i in range(count)}
+    fd, path = tempfile.mkstemp(suffix=".pkl")
+    os.close(fd)
+    start = time.perf_counter()
+    with open(path, "wb") as f:
+        pickle.dump(data, f)
+    elapsed = time.perf_counter() - start
+    os.unlink(path)
+    return elapsed
+
+def bench_file_pickle_get(count, value_size):
+    value = "x" * value_size
+    data = {f"key{i}": value for i in range(count)}
+    fd, path = tempfile.mkstemp(suffix=".pkl")
+    os.close(fd)
+    with open(path, "wb") as f:
+        pickle.dump(data, f)
+    start = time.perf_counter()
+    with open(path, "rb") as f:
+        _ = pickle.load(f)
+    elapsed = time.perf_counter() - start
+    os.unlink(path)
+    return elapsed
+
+
+# ============================================================
 # 运行
 # ============================================================
 
@@ -152,3 +213,18 @@ if __name__ == "__main__":
                 print(f"  {'raw shared_memory':30s} {rt:12.4f}s {rr:12.4f}s")
             except Exception as e:
                 print(f"  {'raw shared_memory':30s} FAILED: {e}")
+
+        # file IPC
+        try:
+            ft = bench_file_json_set(count, vsize)
+            fg = bench_file_json_get(count, vsize)
+            print(f"  {'file JSON (串行)':30s} {ft:12.4f}s {fg:12.4f}s")
+        except Exception as e:
+            print(f"  {'file JSON (串行)':30s} FAILED: {e}")
+
+        try:
+            pt = bench_file_pickle_set(count, vsize)
+            pg = bench_file_pickle_get(count, vsize)
+            print(f"  {'file pickle (串行)':30s} {pt:12.4f}s {pg:12.4f}s")
+        except Exception as e:
+            print(f"  {'file pickle (串行)':30s} FAILED: {e}")

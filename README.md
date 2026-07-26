@@ -39,12 +39,32 @@ d.Close()
 
 ### 性能
 
+实际基准数据（Windows 10 + Python 3.9 + MSVC 2022）：
+
 ```
-                写入 10 条 × 10B          写入 100 条 × 10B         写入 10 条 × 100KB
-pyczan          0.0000s                  0.0001s                   0.0001s
-Manager()       0.0006s  (35x 慢)        0.0036s  (36x 慢)         0.0017s  (17x 慢)
-raw shmem       0.0000s  (同层)          0.0001s  (同层)           0.0006s  (慢 6x)
+100条 × 10B 写入/读取（越快越好）：
+  pyczan.shmem      0.0001s / 0.0000s  ← 基准
+  Manager().dict()  0.0035s / 0.0034s  慢 33x / 慢 251x
+  raw shared_memory 0.0001s / 0.0000s  持平（无 dict API）
+  file pickle       0.0002s / 0.0001s  慢 2x
+  file JSON         0.0002s / 0.0001s  慢 2x
+
+1000条 × 10B 写入/读取：
+  pyczan.shmem      0.0005s / 0.0001s  ← 基准
+  Manager().dict()  0.0278s / 0.0251s  慢 56x / 慢 205x
+  raw shared_memory 0.0004s / 0.0002s  持平
+  file pickle       0.0002s / 0.0001s  慢 2x
+  file JSON         0.0005s / 0.0002s  慢 2x
+
+1条 × 1MB 写入/读取：
+  pyczan.shmem      0.0008s / 0.0005s  ← 基准
+  Manager().dict()  0.0029s / 0.0019s  慢 4x / 慢 4x
+  file pickle       0.0016s / 0.0005s  慢 2x / 持平
+  file JSON         0.0021s / 0.0020s  慢 3x / 慢 4x
 ```
+
+pyczan 大幅快于 Manager().dict()，与原始共享内存性能相当（但提供完整 dict API）。
+小数据时比文件 IPC 快 2-3 倍，大数据时持平。
 
 ### numpy 零拷贝
 
@@ -77,10 +97,6 @@ d["ratio"] = 3.14              # float
 d["data"] = b"\x00\x01\xff"   # bytes
 d["user"] = {"name": "zan"}    # dict → pickle
 
-# 原子操作
-d.Increment("counter")
-d.Add("price", 1.5)
-
 # 零拷贝缓冲区
 buf = d.Alloc(1024 * 1024)
 arr = np.frombuffer(buf, dtype=np.uint8)
@@ -93,10 +109,19 @@ print(d.Status())
 
 # 崩溃后恢复
 if d.Status()["was_crashed"]:
-    print("检测到上次异常退出，数据已自动修复")
+    print("注意：检测到上次异常退出，数据已被保留")
+    print("如有需要可调用 d.Clear() 手动清空")
 
 d.Close()
 ```
+
+## 文档
+
+| 文档 | 说明 |
+|------|------|
+| [API 参考](doc/api.md) | 完整 API 文档，含参数、返回值、异常 |
+| [使用教程](doc/tutorial.md) | 从入门到生产，含多进程实战、性能调优 |
+| [设计文档](doc/pyczan_shmem%20设计文档.md) | 架构设计、算法、数据布局（旧版，仅供参考） |
 
 ## 开发
 
@@ -109,7 +134,7 @@ src\cpp\build_release.bat
 pytest tests\test_shmem.py -v
 ```
 
-需要 VS2022 BuildTools（MSVC v143）。
+需要 VS2022（MSVC v143）。
 
 ## 许可证
 
